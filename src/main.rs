@@ -45,7 +45,7 @@ use std::{fs::File, io, io::Read, mem, path::Path, str::FromStr};
 use clap::{App, Arg};
 use nom::bytes::complete::take_until;
 
-use mem_arena::MemArena;
+use kioku::Arena;
 
 use crate::{
     accel::BVH4Node,
@@ -246,7 +246,7 @@ fn main() {
                     println!("Building scene...");
                 }
 
-                let arena = MemArena::with_min_block_size((1 << 20) * 4);
+                let arena = Arena::new().with_block_size((1 << 20) * 4);
                 let mut scene = parse_scene(&arena, child).unwrap_or_else(|e| {
                     e.print(&psy_contents);
                     panic!("Parse error.");
