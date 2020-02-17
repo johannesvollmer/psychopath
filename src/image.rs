@@ -165,33 +165,51 @@ impl Image {
     }
 
     pub fn write_exr(&mut self, path: &Path) {
-        let mut image = Vec::new();
+        use exr::prelude::*; // exrs TODO export image::rgba, image::simple module and line order, also ImageAttributes and LayerAttributes
+        use exr::meta::{ImageAttributes, LayerAttributes, attributes::{ LineOrder }};
+        use exr::image;
+
+        let mut pixels = Vec::with_capacity(self.res.1 * self.res.0 * 3);
 
         // Convert pixels
+        // exrs TODO convert on the fly without separate pixel vector allocation
         for y in 0..self.res.1 {
             for x in 0..self.res.0 {
                 let (r, g, b) = xyz_to_rec709_e(self.get(x, y).to_tuple());
-                image.push((f16::from_f32(r), f16::from_f32(g), f16::from_f32(b)));
+                pixels.extend_from_slice(&[f16::from_f32(r), f16::from_f32(g), f16::from_f32(b)]);
             }
         }
 
-        let mut file = io::BufWriter::new(File::create(path).unwrap());
-        let mut wr = openexr::ScanlineOutputFile::new(
-            &mut file,
-            openexr::Header::new()
-                .set_resolution(self.res.0 as u32, self.res.1 as u32)
-                .add_channel("R", openexr::PixelType::HALF)
-                .add_channel("G", openexr::PixelType::HALF)
-                .add_channel("B", openexr::PixelType::HALF)
-                .set_compression(openexr::header::Compression::PIZ_COMPRESSION),
-        )
-        .unwrap();
+        // let image = exr::image::rgba::Image::new() TODO exr constructor
 
-        wr.write_pixels(
-            openexr::FrameBuffer::new(self.res.0 as u32, self.res.1 as u32)
-                .insert_channels(&["R", "G", "B"], &image),
-        )
-        .unwrap();
+        let exr_image = exr::image::rgba::Image { // exrs TODO add a constructor to RGBA Image in exr
+            data: image::rgba::Pixels::F16(pixels),
+            resolution: Vec2(self.res.0, self.res.1),
+            has_alpha_channel: false,
+            is_linear: true,
+
+            image_attributes: ImageAttributes { // exrs TODO constructor
+                display_window: IntRect::from_dimensions(Vec2(self.res.0, self.res.1)), // exrs TODO Vec2::from(tuple)
+                pixel_aspect: 1.0,
+                list: Vec::new()
+            },
+
+            layer_attributes: LayerAttributes { // exrs TODO constructor
+                name: None,
+                data_position: Vec2(0, 0), // exrs TODO constant Vec2::ZERO
+                screen_window_center: Vec2(0.0, 0.0),
+                screen_window_width: 1.0,
+                list: Vec::new()
+            },
+
+            encoding: image::rgba::Encoding { // exrs TODO constructor
+                compression: Compression::PIZ, // exrs TODO implement piz compression
+                line_order: LineOrder::Increasing, // FIXME
+                tiles: None,
+            }
+        };
+
+        exr_image.write_to_file(path, write_options::default()).unwrap();
     }
 }
 
