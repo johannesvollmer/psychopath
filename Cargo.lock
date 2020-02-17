@@ -187,7 +187,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "exr"
-version = "0.7.1"
+version = "0.7.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "bit_field 0.10.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -366,7 +366,7 @@ dependencies = [
  "color 0.1.0",
  "copy_in_place 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "crossbeam 0.3.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "exr 0.7.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "exr 0.7.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "glam 0.7.1 (git+https://github.com/bitshifter/glam-rs.git?rev=0f314f99)",
  "half 1.4.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "halton 0.1.0",
@@ -772,7 +772,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum crossbeam-queue 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)" = "c695eeca1e7173472a32221542ae469b3e9aac3a4fc81f7696bcad82029493db"
 "checksum crossbeam-utils 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)" = "ce446db02cdc3165b94ae73111e570793400d0794e46125cc4056c81cbb039f4"
 "checksum either 1.5.3 (registry+https://github.com/rust-lang/crates.io-index)" = "bb1f6b1ce1c140482ea30ddd3335fc0024ac7ee112895426e0a629a6c20adfe3"
-"checksum exr 0.7.1 (registry+https://github.com/rust-lang/crates.io-index)" = "6ae3f8b43e0c5eed54cd3d052f6b3f031e1612474acc4be3eec64cc651fcf787"
+"checksum exr 0.7.2 (registry+https://github.com/rust-lang/crates.io-index)" = "eb1824657ea34a591174da1148371d91f10d7a1c71c02a3e1a1cc734717546e6"
 "checksum fnv 1.0.6 (registry+https://github.com/rust-lang/crates.io-index)" = "2fad85553e09a6f881f739c29f0b00b0f01357c743266d478b68951ce23285f3"
 "checksum fuchsia-cprng 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)" = "a06f77d526c1a601b7c4cdd98f54b5eaabffc14d5f2f0296febdc7f357c6d3ba"
 "checksum glam 0.7.1 (git+https://github.com/bitshifter/glam-rs.git?rev=0f314f99)" = "<none>"

@@ -11,8 +11,6 @@ use std::{
     sync::Mutex,
 };
 
-use half::f16;
-
 use crate::color::{xyz_to_rec709_e, XYZ};
 
 #[derive(Debug)]
@@ -166,8 +164,6 @@ impl Image {
 
     pub fn write_exr(&mut self, path: &Path) {
         use exr::prelude::*; // exrs TODO export image::rgba, image::simple module and line order, also ImageAttributes and LayerAttributes
-        use exr::meta::{ImageAttributes, LayerAttributes, attributes::{ LineOrder }};
-        use exr::image;
 
         let mut pixels = Vec::with_capacity(self.res.1 * self.res.0 * 3);
 
@@ -180,34 +176,15 @@ impl Image {
             }
         }
 
-        // let image = exr::image::rgba::Image::new() TODO exr constructor
+        let exr_image = rgba::Image::new(
+            Vec2(self.res.0, self.res.1), // exrs TODO Vec2::from(tuple)
+            false, true,
+            rgba::Pixels::F16(pixels)
+        );
 
-        let exr_image = exr::image::rgba::Image { // exrs TODO add a constructor to RGBA Image in exr
-            data: image::rgba::Pixels::F16(pixels),
-            resolution: Vec2(self.res.0, self.res.1),
-            has_alpha_channel: false,
-            is_linear: true,
-
-            image_attributes: ImageAttributes { // exrs TODO constructor
-                display_window: IntRect::from_dimensions(Vec2(self.res.0, self.res.1)), // exrs TODO Vec2::from(tuple)
-                pixel_aspect: 1.0,
-                list: Vec::new()
-            },
-
-            layer_attributes: LayerAttributes { // exrs TODO constructor
-                name: None,
-                data_position: Vec2(0, 0), // exrs TODO constant Vec2::ZERO
-                screen_window_center: Vec2(0.0, 0.0),
-                screen_window_width: 1.0,
-                list: Vec::new()
-            },
-
-            encoding: image::rgba::Encoding { // exrs TODO constructor
-                compression: Compression::PIZ, // exrs TODO implement piz compression
-                line_order: LineOrder::Increasing, // FIXME
-                tiles: None,
-            }
-        };
+        let exr_image = exr_image.with_encoding(
+            rgba::Encoding::compress(Compression::PIZ) // exrs TODO implement piz compression
+        );
 
         exr_image.write_to_file(path, write_options::default()).unwrap();
     }

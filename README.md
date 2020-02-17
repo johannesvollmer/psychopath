@@ -17,22 +17,13 @@ explore than just writing a basic path tracer.
 Psychopath is written in [Rust](https://www.rust-lang.org), and is pretty
 straightforward to build except for its OpenEXR dependency.
 
-If you have OpenEXR 2.2 installed on your system such that pkg-config can find
-it, then as long as you have Rust (including Cargo) and a C++ compiler
+If you have Rust (including Cargo) and a C++ compiler
 installed, you should be able to build Psychopath with this command at the
 repository root:
 
 ```
 cargo build --release
 ```
-
-However, if you are on an OS that doesn't have pkg-config (e.g. OSX, Windows),
-or you prefer to do a custom build of OpenEXR, then you will need to download
-and build OpenEXR yourself and specify the necessary environment variables as
-documented in the [OpenEXR-rs readme](https://github.com/cessen/openexr-rs/blob/master/README.md).
-
-Once those environment variables are set, then you should be able to build using
-the same simple cargo command above.
 
 If you have any difficulties, please feel free to file an issue and I'll try to
 help out as I have time!
