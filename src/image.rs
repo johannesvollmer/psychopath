@@ -163,7 +163,7 @@ impl Image {
     }
 
     pub fn write_exr(&mut self, path: &Path) {
-        use exr::prelude::*; // exrs TODO export image::rgba, image::simple module and line order, also ImageAttributes and LayerAttributes
+        use exr::prelude::*;
 
         let mut pixels = Vec::with_capacity(self.res.1 * self.res.0 * 3);
 
